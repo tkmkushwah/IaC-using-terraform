@@ -1,0 +1,7 @@
+# Ignore Terraform state files (contain sensitive data)
+*.tfstate
+*.tfstate.backup
+# Ignore Terraform provider-specific files
+.terraform/
+.terraform/providers/
+ terraform.tfvars

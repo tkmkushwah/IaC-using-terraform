@@ -1,0 +1,1 @@
+#  to hold variable declration which are meant to be retrieved back after applyibg terraform code
