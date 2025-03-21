@@ -17,3 +17,9 @@ variable "public_subnet2_cidr"{
 variable "private_subnet_cidr"{
     type=string
 }
+variable "jenkins_port"{
+    type=number
+}
+variable "ssh_port"{
+    type=number
+}

@@ -25,14 +25,14 @@ resource "aws_eip" "nat_eip" {
 
 # create the nat gateway
 
-# resource "aws_nat_gateway" "nat_gw" {
-#   allocation_id = aws_eip.nat_eip.id
-#   subnet_id = aws_subnet.public_subnet1.id
-#   tags = {
-#     Name ="NAT Gateway" 
-#   }
+resource "aws_nat_gateway" "nat_gw" {
+  allocation_id = aws_eip.nat_eip.id
+  subnet_id = aws_subnet.public_subnet1.id
+  tags = {
+    Name ="NAT Gateway" 
+  }
 
-# }
+}
 
 #create public route table 
 resource "aws_route_table" "public_rt" {
@@ -85,4 +85,38 @@ resource "aws_subnet" "private_subnet" {
    tags = {
     Name ="private subnet"
   }
+}
+#associate public route table with public subnet1
+resource "aws_route_table_association" "public_association1" {
+  subnet_id = aws_subnet.public_subnet1.id
+  route_table_id = aws_route_table.public_rt.id  
+}
+
+#creating jenkins security groups using tf
+
+resource "aws_security_group" "jenkins_sg" {
+ name="jenkins sg"
+ description="allow ports 8080 and 22"
+ vpc_id=aws_vpc.production_vpc.id
+ ingress {
+  description = "jenkins"
+  from_port = var.jenkins_port
+  to_port = var.jenkins_port
+  protocol = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+ } 
+  ingress {
+  description = "SSH"
+  from_port = var.ssh_port
+  to_port = var.ssh_port
+  protocol = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+ } 
+ egress = {
+  from_port= "0" // allow outbound traffic on any port 
+  to_port="0"
+  protocol= "-1"  //represent any protocol 
+  cidr_block=["0.0.0.0/0"]
+ }
+ tags = "JENKINS SG"
 }
