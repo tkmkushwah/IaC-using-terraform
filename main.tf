@@ -33,3 +33,56 @@ resource "aws_eip" "nat_eip" {
 #   }
 
 # }
+
+#create public route table 
+resource "aws_route_table" "public_rt" {
+  vpc_id = aws_vpc.production_vpc.id //where we want to create route table
+  route {
+    cidr_block = var.all_cidr
+    gateway_id = aws_internet_gateway.igw.id
+  }
+  tags = {
+    Name="Public RT"
+  }
+
+}
+#create public route table 
+resource "aws_route_table" "private_rt" {
+  vpc_id = aws_vpc.production_vpc.id //where we want to create route table
+  route {
+    cidr_block = var.all_cidr
+    nat_gateway_id = aws_nat_gateway.nat_gw.id 
+  }
+  tags = {
+    Name="Private RT"
+  }
+}
+#create the public subnet1
+resource "aws_subnet" "public_subnet1" {
+   vpc_id = aws_vpc.production_vpc.id
+   cidr_block = var.public_subnet1_cidr
+   availability_zone = "us-east-1b"
+   map_public_ip_on_launch = true
+   tags = {
+    Name ="public subnet 1"
+  }
+}
+#create the public subnet2
+resource "aws_subnet" "public_subnet2" {
+   vpc_id = aws_vpc.production_vpc.id
+   cidr_block = var.public_subnet2_cidr
+   availability_zone = "us-east-1b"
+   map_public_ip_on_launch = true
+   tags = {
+    Name ="public subnet 2"
+  }
+}
+#create the private subnet
+resource "aws_subnet" "private_subnet" {
+   vpc_id = aws_vpc.production_vpc.id
+   cidr_block = var.private_subnet_cidr
+   availability_zone = "us-east-1b"
+   tags = {
+    Name ="private subnet"
+  }
+}
