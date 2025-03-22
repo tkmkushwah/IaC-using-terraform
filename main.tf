@@ -257,3 +257,60 @@ resource "aws_security_group" "lb_sg" {
  }
  tags = {name="LOADBALANCER SG"}
 }
+
+# create ACL(access control list)
+resource "aws_network_acl" "nacl" {
+  vpc_id = aws_vpc.production_vpc.id
+  subnet_ids = [ aws_subnet.public_subnet1.id,aws_subnet.public_subnet2.id,aws_subnet.private_subnet.id ]
+  egress {
+    protocol = "tcp"
+    rule_no = "100"
+    action = "allow"
+    cidr_block = var.vpc_cidr
+    from_port = 0
+    to_port = 0
+  }
+  ingress {
+     protocol = "tcp"
+    rule_no = "100"
+    action = "allow"
+    cidr_block = var.all_cidr
+    from_port = var.http_port
+    to_port = var.http_port
+  }
+  ingress {
+     protocol = "tcp"
+    rule_no = "101"
+    action = "allow"
+    cidr_block = var.all_cidr
+    from_port = var.ssh_port
+    to_port = var.ssh_port
+  }
+  ingress {
+     protocol = "tcp"
+    rule_no = "102"
+    action = "allow"
+    cidr_block = var.all_cidr
+    from_port = var.jenkins_port
+    to_port = var.jenkins_port
+  }
+  ingress {
+     protocol = "tcp"
+    rule_no = "103"
+    action = "allow"
+    cidr_block = var.all_cidr
+    from_port = var.sonarqube_port
+    to_port = var.sonarqube_port
+  }
+  ingress {
+     protocol = "tcp"
+    rule_no = "104"
+    action = "allow"
+    cidr_block = var.all_cidr
+    from_port = var.grafana_port
+    to_port = var.grafana_port
+  }
+  tags = {
+    name="Main ACL"
+  }
+}
