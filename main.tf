@@ -314,3 +314,18 @@ resource "aws_network_acl" "nacl" {
     name="Main ACL"
   }
 }
+
+# create the ECR (elastic container registry)
+
+resource "aws_ecr_repository" "ecr_repo" {
+  name = "docker repository"
+  image_scanning_configuration { 
+   scan_on_push=true
+  }
+}
+# create key pair 
+
+resource "aws_key_pair" "auth_key" {
+  key_name = var.key_name
+  public_key = var.key_value
+}
