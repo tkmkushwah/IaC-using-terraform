@@ -38,3 +38,12 @@ variable "key_name"{
 variable "key_value"{
     type=string
 }
+variable "ubuntu_ami"{
+    type=string
+}
+variable "micro_instance"{
+    type=string
+}
+variable "availability_zone"{
+    type=string
+}
