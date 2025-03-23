@@ -331,16 +331,16 @@ resource "aws_key_pair" "auth_key" {
 }
 
 # create s3 bucket for backend to store tfstatefile 
-# resource "aws_s3_bucket" "devops-projects-terraform-state" {
-#   bucket = "devops-project-terraform-state"
-#   acl = "private"
-#   versioning {
-#     enabled = "true"
-#     }
-#     tags = {
-#       name="terraform state bucket"
-#     }
-# }
+resource "aws_s3_bucket" "devops-projects-terraform-state" {
+  bucket = "devops-project-terraform-state"
+  acl = "private"
+  versioning {
+    enabled = "true"
+    }
+    tags = {
+      name="terraform state bucket"
+    }
+}
 
 # configuring the s3 bucket
 terraform {
@@ -351,3 +351,4 @@ terraform {
     
   }
 }
+
